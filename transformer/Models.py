@@ -8,15 +8,18 @@ def get_pad_mask(seq, pad_inx):
     return (seq != pad_inx).unsqueeze(-2)
 
 def get_subsequent_mask(seq):
-     ''' For masking out the subsequent info. '''
-     sz_b, len_s = seq.size()
-     subsequent_mask = (1 - torch.triu(
+    # Decoder中的屏蔽机制
+    '''For masking out the subsequent info. '''
+    sz_b, len_s = seq.size()
+    subsequent_mask = (1 - torch.triu(
         torch.ones((1, len_s, len_s), device=seq.device,),
         diagonal=1
-     )).bool()
-     return subsequent_mask
+    )).bool()
+    return subsequent_mask
 
 class PositionEncoding(nn.Module):
+    '''Positional Encoding'''
+    
     def __init__(self, d_hid, n_position=200):
         super(PositionEncoding,self).__init__()
 
